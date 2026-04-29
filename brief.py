@@ -418,7 +418,9 @@ def build_research(ticker: str) -> str:
     ten_k = next((f for f in filings if "10-K" in f["form"]), None)
     ten_q = next((f for f in filings if "10-Q" in f["form"]), None)
     if not ten_k:
-        raise ValueError(f"No 10-K found for {ticker}")
+        ten_k = filings[0]
+    if not ten_q: 
+        ten_q = filings[1] if len(filings) > 1 else filings[0]
     ten_k_text = fetch_filing_text(ten_k["url"], max_chars=50_000)
     ten_q_text = fetch_filing_text(ten_q["url"], max_chars=30_000) if ten_q else "(no 10-Q)"
     return RESEARCH_PROMPT.format(ticker=ticker.upper(), ten_k=ten_k_text, ten_q=ten_q_text)
