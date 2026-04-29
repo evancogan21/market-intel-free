@@ -1,1 +1,31 @@
+name: Daily Briefing
 
+on:
+  schedule:
+    # 6:00 AM Central Time, weekdays.
+    # Cron is UTC. CT = UTC-5 (CDT) summer, UTC-6 (CST) winter.
+    # Default below = 11:00 UTC ≈ 6:00 AM CDT.
+    # In winter, change to "0 12 * * 1-5".
+    - cron: "0 11 * * 1-5"
+  workflow_dispatch:  # lets you run it manually from the Actions tab
+
+permissions:
+  issues: write   # required to create the briefing issue
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python brief.py daily
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
