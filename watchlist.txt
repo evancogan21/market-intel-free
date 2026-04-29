@@ -1,1 +1,14 @@
+# One ticker per line. # is a comment.
+# Start small (5-15 names). These are companies you want filing alerts on.
+# Add to it as IMA coverage grows.
 
+AAPL
+MSFT
+JPM
+BX
+KKR
+APO
+ARES
+ICE
+SCHW
+GS
