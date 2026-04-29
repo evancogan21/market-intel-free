@@ -415,8 +415,8 @@ def build_ideas() -> str:
 
 def build_research(ticker: str) -> str:
     filings = fetch_company_filings(ticker, limit=10)
-    ten_k = next((f for f in filings if f["form"] == "10-K"), None)
-    ten_q = next((f for f in filings if f["form"] == "10-Q"), None)
+    ten_k = next((f for f in filings if "10-K" in f["form"]), None)
+    ten_q = next((f for f in filings if "10-Q" in f["form"]), None)
     if not ten_k:
         raise ValueError(f"No 10-K found for {ticker}")
     ten_k_text = fetch_filing_text(ten_k["url"], max_chars=50_000)
